@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   Timer: {
     color: "#F9F9F9",
     fontSize: 76,
-    fontWeight: "300",
+    fontWeight: "200",
     width: 110,
   },
   button: {
@@ -261,7 +261,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     alignSelf: "stretch",
-    alignContent: "space-between",
   },
   fastest: {
     color: "#4bc05f",
