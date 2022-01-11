@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import {
-  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import moment from "moment";
 
@@ -20,6 +20,7 @@ function Timer({ interval, style }) {
     </View>
   );
 }
+
 function RoundButton({ title, color, background, onPress, disabled }) {
   return (
     <TouchableOpacity
@@ -33,10 +34,6 @@ function RoundButton({ title, color, background, onPress, disabled }) {
     </TouchableOpacity>
   );
 }
-function ButtonsRow({ children }) {
-  return <View style={styles.buttonsRow}>{children}</View>;
-}
-
 function Lap({ number, interval, fastest, slowest }) {
   const lapStyle = [
     styles.lapText,
@@ -44,13 +41,14 @@ function Lap({ number, interval, fastest, slowest }) {
     slowest && styles.slowest,
   ];
   return (
-    <View style={lapStyle.lap}>
-      <Text style={lapStyle}>Lap {number} </Text>
+    <View style={styles.lap}>
+      <Text style={lapStyle}>Lap {number}</Text>
       <Timer style={[lapStyle, styles.lapTimer]} interval={interval} />
     </View>
   );
 }
-function LapTables({ laps, timer }) {
+
+function LapsTable({ laps, timer }) {
   const finishedLaps = laps.slice(1);
   let min = Number.MAX_SAFE_INTEGER;
   let max = Number.MIN_SAFE_INTEGER;
@@ -75,6 +73,9 @@ function LapTables({ laps, timer }) {
   );
 }
 
+function ButtonsRow({ children }) {
+  return <View style={styles.buttonsRow}>{children}</View>;
+}
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -99,6 +100,7 @@ export default class App extends Component {
       this.setState({ now: new Date().getTime() });
     }, 100);
   };
+
   lap = () => {
     const timestamp = new Date().getTime();
     const { laps, now, start } = this.state;
@@ -109,6 +111,7 @@ export default class App extends Component {
       now: timestamp,
     });
   };
+
   stop = () => {
     clearInterval(this.timer);
     const { laps, now, start } = this.state;
@@ -136,7 +139,6 @@ export default class App extends Component {
       this.setState({ now: new Date().getTime() });
     }, 100);
   };
-
   render() {
     const { now, start, laps } = this.state;
     const timer = now - start;
@@ -144,20 +146,20 @@ export default class App extends Component {
       <View style={styles.container}>
         <Timer
           interval={laps.reduce((total, curr) => total + curr, 0) + timer}
-          style={styles.Timer}
+          style={styles.timer}
         />
         {laps.length === 0 && (
           <ButtonsRow>
             <RoundButton
-              title={"Lap"}
-              color={"#8b8b90"}
-              background={"#151515"}
+              title="Lap"
+              color="#8B8B90"
+              background="#151515"
               disabled
             />
             <RoundButton
-              title={"Start"}
-              color={"#23C34F"}
-              background={"#122B15"}
+              title="Start"
+              color="#50D167"
+              background="#1B361F"
               onPress={this.start}
             />
           </ButtonsRow>
@@ -165,15 +167,15 @@ export default class App extends Component {
         {start > 0 && (
           <ButtonsRow>
             <RoundButton
-              title={"Lap"}
-              color={"#FCFCFC"}
-              background={"#343434"}
+              title="Lap"
+              color="#FFFFFF"
+              background="#3D3D3D"
               onPress={this.lap}
             />
             <RoundButton
-              title={"Stop"}
-              color={"#e33935"}
-              background={"#3c1715"}
+              title="Stop"
+              color="#E33935"
+              background="#3C1715"
               onPress={this.stop}
             />
           </ButtonsRow>
@@ -181,20 +183,20 @@ export default class App extends Component {
         {laps.length > 0 && start === 0 && (
           <ButtonsRow>
             <RoundButton
-              title={"Reset"}
-              color={"#FCFCFC"}
-              background={"#343434"}
+              title="Reset"
+              color="#FFFFFF"
+              background="#3D3D3D"
               onPress={this.reset}
             />
             <RoundButton
-              title={"Start"}
-              color={"#23C34F"}
-              background={"#122B15"}
+              title="Start"
+              color="#50D167"
+              background="#1B361F"
               onPress={this.resume}
             />
           </ButtonsRow>
         )}
-        <LapTables laps={laps} timer={timer} />
+        <LapsTable laps={laps} timer={timer} />
       </View>
     );
   }
@@ -203,42 +205,36 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#202020",
+    backgroundColor: "#0D0D0D",
     alignItems: "center",
     paddingTop: 130,
     paddingHorizontal: 20,
   },
-  timerContainer: {
-    flexDirection: "row",
-  },
-  Timer: {
-    color: "#F9F9F9",
+  timer: {
+    color: "#FFFFFF",
     fontSize: 76,
     fontWeight: "200",
     width: 110,
   },
   button: {
-    // nut bam tron
     width: 80,
     height: 80,
     borderRadius: 40,
     justifyContent: "center",
-    alignSelf: "center",
+    alignItems: "center",
   },
   buttonTitle: {
     fontSize: 18,
   },
   buttonBorder: {
-    // vien bao quanh
-    width: 78,
-    height: 78,
+    width: 76,
+    height: 76,
     borderRadius: 38,
     borderWidth: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   buttonsRow: {
-    // nut bam ngang hang
     flexDirection: "row",
     alignSelf: "stretch",
     justifyContent: "space-between",
@@ -246,7 +242,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   lapText: {
-    color: "#fff",
+    color: "#FFFFFF",
     fontSize: 18,
   },
   lapTimer: {
@@ -254,18 +250,21 @@ const styles = StyleSheet.create({
   },
   lap: {
     flexDirection: "row",
-    alignContent: "space-between",
+    justifyContent: "space-between",
     borderColor: "#151515",
-    borderWidth: 1,
+    borderTopWidth: 1,
     paddingVertical: 10,
   },
   scrollView: {
     alignSelf: "stretch",
   },
   fastest: {
-    color: "#4bc05f",
+    color: "#4BC05F",
   },
   slowest: {
-    color: "#cc3531",
+    color: "#CC3531",
+  },
+  timerContainer: {
+    flexDirection: "row",
   },
 });
